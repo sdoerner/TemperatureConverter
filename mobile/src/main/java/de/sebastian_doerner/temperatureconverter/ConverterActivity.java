@@ -11,11 +11,18 @@ import android.widget.TextView;
 
 public final class ConverterActivity extends Activity {
 
+    private static final String TAG = ConverterActivity.class.getSimpleName();
+
     private static final int INITIAL_TEMPERATURE_CELSIUS = 16;
     private static final int MIN_TEMPERATURE_CELSIUS = -273;
     private static final int MAX_TEMPERATURE_CELSIUS = 100;
 
+    private static final double VELOCITY_TO_TEMPERATURE_DELTA_RATIO = 1000.0;
+    private static final long MIN_TIME_BETWEEN_SMALL_EVENTS_MS = 150;
+
     int temperatureCelsius;
+
+    long lastProcessedEvent = 0l;
 
     private TextView celsiusView;
     private TextView fahrenheitView;
@@ -46,6 +53,24 @@ public final class ConverterActivity extends Activity {
         return Math.max(Math.min(targetValue, maxValue), minValue);
     }
 
+    private void handleMoveEventWithVelocity(float velocity) {
+        Log.i(TAG, "velocity: " + velocity);
+        double magnitude = Math.abs(velocity / VELOCITY_TO_TEMPERATURE_DELTA_RATIO);
+        int magnitudeInt = (int) Math.ceil(magnitude);
+        int celsiusTargetDelta = magnitudeInt * (velocity > 0 ? -1 : 1);
+
+        // For small magnitudes only process events ever so often to make it easier to make small
+        // adjustments.
+        long timeStamp = System.currentTimeMillis();
+        if (magnitudeInt > 1
+                || (timeStamp - lastProcessedEvent > MIN_TIME_BETWEEN_SMALL_EVENTS_MS)) {
+            lastProcessedEvent = timeStamp;
+            setTemperatureCelsius(temperatureCelsius + celsiusTargetDelta);
+        } else {
+            Log.i(TAG, "dropping event");
+        }
+    }
+
     public boolean onTouchEvent(MotionEvent event) {
         int index = event.getActionIndex();
         int action = event.getActionMasked();
@@ -64,7 +89,7 @@ public final class ConverterActivity extends Activity {
             case MotionEvent.ACTION_MOVE:
                 velocityTracker.addMovement(event);
                 velocityTracker.computeCurrentVelocity(1000);
-                Log.i("Converter", "Y velocity: " + velocityTracker.getYVelocity(pointerId));
+                handleMoveEventWithVelocity(velocityTracker.getYVelocity(pointerId));
                 break;
             case MotionEvent.ACTION_UP:
             case MotionEvent.ACTION_CANCEL:
