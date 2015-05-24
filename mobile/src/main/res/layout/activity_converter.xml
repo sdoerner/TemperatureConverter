@@ -10,10 +10,12 @@
         android:layout_height="wrap_content"
         android:gravity="center_horizontal">
         <TextView
+            android:id="@+id/celsius_view"
             android:text="@string/celsius"
             style="@style/temperatureViewStyle"
             />
         <TextView
+            android:id="@+id/fahrenheit_view"
             android:text="@string/fahrenheit"
             style="@style/temperatureViewStyle"
             />
