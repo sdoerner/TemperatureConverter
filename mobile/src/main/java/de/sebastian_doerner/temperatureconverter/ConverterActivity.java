@@ -1,6 +1,6 @@
 package de.sebastian_doerner.temperatureconverter;
 
-import static de.sebastian_doerner.temperatureconverter.TemperatureCalculator.getFahrenheitFromCelsius;
+import static de.sebastian_doerner.common.TemperatureCalculator.getFahrenheitFromCelsius;
 
 import android.app.Activity;
 import android.os.Bundle;

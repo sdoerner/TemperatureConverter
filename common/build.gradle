@@ -1,13 +1,12 @@
-apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 
 android {
     compileSdkVersion 20
     buildToolsVersion "19.1.0"
 
     defaultConfig {
-        applicationId "de.sebastian_doerner.temperatureconverter"
         minSdkVersion 19
-        targetSdkVersion 20
+        targetSdkVersion 22
         versionCode 1
         versionName "1.0"
     }
@@ -21,8 +20,4 @@ android {
 
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
-    wearApp project(':wear')
-    compile 'com.google.android.gms:play-services:7.3.0'
-    compile 'com.android.support:support-v4:22.1.1'
-    compile project(':common')
 }

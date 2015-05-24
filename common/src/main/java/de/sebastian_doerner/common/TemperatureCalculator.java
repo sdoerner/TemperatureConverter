@@ -1,4 +1,4 @@
-package de.sebastian_doerner.temperatureconverter;
+package de.sebastian_doerner.common;
 
 /**
  * Class to convert between Celsius and Fahrenheit temperatures.
