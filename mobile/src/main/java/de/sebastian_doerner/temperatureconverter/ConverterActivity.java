@@ -17,10 +17,10 @@ public final class ConverterActivity extends Activity {
     private static final int MIN_TEMPERATURE_CELSIUS = -273;
     private static final int MAX_TEMPERATURE_CELSIUS = 100;
 
-    private static final double VELOCITY_TO_TEMPERATURE_DELTA_RATIO = 1000.0;
+    private static final float VELOCITY_TO_TEMPERATURE_DELTA_RATIO = 1000.0f;
     private static final long MIN_TIME_BETWEEN_SMALL_EVENTS_MS = 200;
 
-    int temperatureCelsius;
+    float temperatureCelsius;
 
     long lastProcessedEvent = 0l;
 
@@ -37,33 +37,36 @@ public final class ConverterActivity extends Activity {
         setTemperatureCelsius(INITIAL_TEMPERATURE_CELSIUS);
     }
 
-    private void setTemperatureCelsius(int temperatureCelsius) {
+    private void setTemperatureCelsius(float temperatureCelsius) {
         temperatureCelsius =
                 clamp(MIN_TEMPERATURE_CELSIUS, temperatureCelsius, MAX_TEMPERATURE_CELSIUS);
         this.temperatureCelsius = temperatureCelsius;
-        String celsiusString = getString(R.string.celsius, temperatureCelsius);
-        celsiusView.setText(celsiusString);
 
-        int temperatureFahrenheit = getFahrenheitFromCelsius(temperatureCelsius);
-        String fahrenheitString = getString(R.string.fahrenheit, temperatureFahrenheit);
-        fahrenheitView.setText(fahrenheitString);
+        setTemperatureOnView(celsiusView, R.string.celsius, temperatureCelsius);
+        float temperatureFahrenheit = getFahrenheitFromCelsius(temperatureCelsius);
+        setTemperatureOnView(fahrenheitView, R.string.fahrenheit, temperatureFahrenheit);
     }
 
-    private int clamp(int minValue, int targetValue, int maxValue) {
+    void setTemperatureOnView(TextView textView, int formatString, float temperature) {
+        int roundedTemperature = Math.round(temperature);
+        String temperatureString = getString(formatString, roundedTemperature);
+        textView.setText(temperatureString);
+    }
+
+    private float clamp(float minValue, float targetValue, float maxValue) {
         return Math.max(Math.min(targetValue, maxValue), minValue);
     }
 
     private void handleMoveEventWithVelocity(float velocity) {
         Log.i(TAG, "velocity: " + velocity);
-        double magnitude = Math.abs(velocity / VELOCITY_TO_TEMPERATURE_DELTA_RATIO);
-        int magnitudeInt = (int) Math.ceil(magnitude);
-        int celsiusTargetDelta = magnitudeInt * (velocity > 0 ? -1 : 1);
+        float magnitude = Math.abs(velocity / VELOCITY_TO_TEMPERATURE_DELTA_RATIO);
+        float celsiusTargetDelta = magnitude * (velocity > 0 ? -1.0f : 1.0f);
 
         // For small magnitudes only process events ever so often to make it easier to make small
         // adjustments.
         long timeStamp = System.currentTimeMillis();
-        if (magnitudeInt > 0 &&
-                timeStamp - lastProcessedEvent > MIN_TIME_BETWEEN_SMALL_EVENTS_MS / magnitudeInt) {
+        if (magnitude > 0 &&
+                timeStamp - lastProcessedEvent > MIN_TIME_BETWEEN_SMALL_EVENTS_MS / magnitude) {
             lastProcessedEvent = timeStamp;
             setTemperatureCelsius(temperatureCelsius + celsiusTargetDelta);
         } else {

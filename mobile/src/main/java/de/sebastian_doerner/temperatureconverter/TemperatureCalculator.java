@@ -6,13 +6,11 @@ package de.sebastian_doerner.temperatureconverter;
 public final class TemperatureCalculator {
     private TemperatureCalculator() {}
 
-    public static int getCelsiusFromFahrenheit(int fahrenheit) {
-        float exactResult =  (fahrenheit - 32) * 5.0f / 9.0f;
-        return Math.round(exactResult);
+    public static float getCelsiusFromFahrenheit(float fahrenheit) {
+        return (fahrenheit - 32) * 5.0f / 9.0f;
     }
 
-    public static int getFahrenheitFromCelsius(int celsius) {
-        float exactResult = (celsius * 9.0f / 5.0f) + 32.0f;
-        return Math.round(exactResult);
+    public static float getFahrenheitFromCelsius(float celsius) {
+        return (celsius * 9.0f / 5.0f) + 32.0f;
     }
 }
