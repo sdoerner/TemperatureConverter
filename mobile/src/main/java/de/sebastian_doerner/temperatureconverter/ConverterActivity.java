@@ -18,7 +18,7 @@ public final class ConverterActivity extends Activity {
     private static final int MAX_TEMPERATURE_CELSIUS = 100;
 
     private static final double VELOCITY_TO_TEMPERATURE_DELTA_RATIO = 1000.0;
-    private static final long MIN_TIME_BETWEEN_SMALL_EVENTS_MS = 150;
+    private static final long MIN_TIME_BETWEEN_SMALL_EVENTS_MS = 200;
 
     int temperatureCelsius;
 
@@ -62,8 +62,8 @@ public final class ConverterActivity extends Activity {
         // For small magnitudes only process events ever so often to make it easier to make small
         // adjustments.
         long timeStamp = System.currentTimeMillis();
-        if (magnitudeInt > 1
-                || (timeStamp - lastProcessedEvent > MIN_TIME_BETWEEN_SMALL_EVENTS_MS)) {
+        if (magnitudeInt > 0 &&
+                timeStamp - lastProcessedEvent > MIN_TIME_BETWEEN_SMALL_EVENTS_MS / magnitudeInt) {
             lastProcessedEvent = timeStamp;
             setTemperatureCelsius(temperatureCelsius + celsiusTargetDelta);
         } else {
