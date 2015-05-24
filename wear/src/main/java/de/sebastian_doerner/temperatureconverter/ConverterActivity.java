@@ -5,7 +5,9 @@ import android.os.Bundle;
 import android.support.wearable.view.WatchViewStub;
 import android.widget.TextView;
 
-public class ConverterActivity extends Activity {
+import de.sebastian_doerner.common.BaseConverterActivity;
+
+public final class ConverterActivity extends BaseConverterActivity {
 
     private TextView mTextView;
 

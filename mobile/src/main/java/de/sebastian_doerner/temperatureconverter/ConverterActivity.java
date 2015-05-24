@@ -2,14 +2,15 @@ package de.sebastian_doerner.temperatureconverter;
 
 import static de.sebastian_doerner.common.TemperatureCalculator.getFahrenheitFromCelsius;
 
-import android.app.Activity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.widget.TextView;
 
-public final class ConverterActivity extends Activity {
+import de.sebastian_doerner.common.BaseConverterActivity;
+
+public final class ConverterActivity extends BaseConverterActivity {
 
     private static final String TAG = ConverterActivity.class.getSimpleName();
 
@@ -45,16 +46,6 @@ public final class ConverterActivity extends Activity {
         setTemperatureOnView(celsiusView, R.string.celsius, temperatureCelsius);
         float temperatureFahrenheit = getFahrenheitFromCelsius(temperatureCelsius);
         setTemperatureOnView(fahrenheitView, R.string.fahrenheit, temperatureFahrenheit);
-    }
-
-    void setTemperatureOnView(TextView textView, int formatString, float temperature) {
-        int roundedTemperature = Math.round(temperature);
-        String temperatureString = getString(formatString, roundedTemperature);
-        textView.setText(temperatureString);
-    }
-
-    private float clamp(float minValue, float targetValue, float maxValue) {
-        return Math.max(Math.min(targetValue, maxValue), minValue);
     }
 
     private void handleMoveEventWithVelocity(float velocity) {
