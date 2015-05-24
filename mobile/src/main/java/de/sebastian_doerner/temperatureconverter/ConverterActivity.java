@@ -17,7 +17,7 @@ public final class ConverterActivity extends Activity {
     private static final int MIN_TEMPERATURE_CELSIUS = -273;
     private static final int MAX_TEMPERATURE_CELSIUS = 100;
 
-    private static final float VELOCITY_TO_TEMPERATURE_DELTA_RATIO = 1000.0f;
+    private static final float VELOCITY_TO_TEMPERATURE_DELTA_RATIO = 700.0f;
     private static final long MIN_TIME_BETWEEN_SMALL_EVENTS_MS = 200;
 
     float temperatureCelsius;
