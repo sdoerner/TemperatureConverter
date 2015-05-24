@@ -4,9 +4,10 @@ import static de.sebastian_doerner.temperatureconverter.TemperatureCalculator.ge
 
 import android.app.Activity;
 import android.os.Bundle;
+import android.util.Log;
+import android.view.MotionEvent;
+import android.view.VelocityTracker;
 import android.widget.TextView;
-
-
 
 public final class ConverterActivity extends Activity {
 
@@ -18,6 +19,7 @@ public final class ConverterActivity extends Activity {
 
     private TextView celsiusView;
     private TextView fahrenheitView;
+    private VelocityTracker velocityTracker;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,5 +44,34 @@ public final class ConverterActivity extends Activity {
 
     private int clamp(int minValue, int targetValue, int maxValue) {
         return Math.max(Math.min(targetValue, maxValue), minValue);
+    }
+
+    public boolean onTouchEvent(MotionEvent event) {
+        int index = event.getActionIndex();
+        int action = event.getActionMasked();
+        int pointerId = event.getPointerId(index);
+
+        switch(action) {
+            case MotionEvent.ACTION_DOWN:
+                if(velocityTracker == null) {
+                    velocityTracker = VelocityTracker.obtain();
+                }
+                else {
+                    velocityTracker.clear();
+                }
+                velocityTracker.addMovement(event);
+                break;
+            case MotionEvent.ACTION_MOVE:
+                velocityTracker.addMovement(event);
+                velocityTracker.computeCurrentVelocity(1000);
+                Log.i("Converter", "Y velocity: " + velocityTracker.getYVelocity(pointerId));
+                break;
+            case MotionEvent.ACTION_UP:
+            case MotionEvent.ACTION_CANCEL:
+                velocityTracker.recycle();
+                velocityTracker = null;
+                break;
+        }
+        return true;
     }
 }
