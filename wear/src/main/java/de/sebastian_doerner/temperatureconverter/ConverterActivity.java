@@ -16,7 +16,10 @@ public final class ConverterActivity extends BaseConverterActivity {
         stub.setOnLayoutInflatedListener(new WatchViewStub.OnLayoutInflatedListener() {
             @Override
             public void onLayoutInflated(WatchViewStub stub) {
+               initialize();
             }
+
+
         });
     }
 }
