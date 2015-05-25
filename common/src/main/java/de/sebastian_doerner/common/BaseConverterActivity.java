@@ -6,9 +6,10 @@ import android.app.Activity;
 import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
+import android.view.View;
 import android.widget.TextView;
 
-public abstract class BaseConverterActivity extends Activity {
+public abstract class BaseConverterActivity extends Activity implements View.OnTouchListener {
 
     private static final String TAG = BaseConverterActivity.class.getSimpleName();
 
@@ -27,8 +28,10 @@ public abstract class BaseConverterActivity extends Activity {
     private VelocityTracker velocityTracker;
 
     protected void initialize() {
-        celsiusView = (TextView) findViewById(R.id.celsius_view);
-        fahrenheitView = (TextView) findViewById(R.id.fahrenheit_view);
+        View rootView = findViewById(R.id.root_view);
+        celsiusView = (TextView) rootView.findViewById(R.id.celsius_view);
+        fahrenheitView = (TextView) rootView.findViewById(R.id.fahrenheit_view);
+        rootView.setOnTouchListener(this);
         setTemperatureCelsius(INITIAL_TEMPERATURE_CELSIUS);
     }
 
@@ -70,11 +73,10 @@ public abstract class BaseConverterActivity extends Activity {
     }
 
     @Override
-    public boolean onTouchEvent(MotionEvent event) {
-        Log.i(TAG, "onTouchEvent");
-        int index = event.getActionIndex();
-        int action = event.getActionMasked();
-        int pointerId = event.getPointerId(index);
+    public boolean onTouch(View view, MotionEvent motionEvent) {
+        int index = motionEvent.getActionIndex();
+        int action = motionEvent.getActionMasked();
+        int pointerId = motionEvent.getPointerId(index);
 
         switch(action) {
             case MotionEvent.ACTION_DOWN:
@@ -84,10 +86,10 @@ public abstract class BaseConverterActivity extends Activity {
                 else {
                     velocityTracker.clear();
                 }
-                velocityTracker.addMovement(event);
+                velocityTracker.addMovement(motionEvent);
                 break;
             case MotionEvent.ACTION_MOVE:
-                velocityTracker.addMovement(event);
+                velocityTracker.addMovement(motionEvent);
                 velocityTracker.computeCurrentVelocity(1000);
                 handleMoveEventWithVelocity(velocityTracker.getYVelocity(pointerId));
                 break;
@@ -99,4 +101,5 @@ public abstract class BaseConverterActivity extends Activity {
         }
         return true;
     }
+
 }
