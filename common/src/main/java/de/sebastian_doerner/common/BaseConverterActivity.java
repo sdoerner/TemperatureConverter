@@ -3,7 +3,6 @@ package de.sebastian_doerner.common;
 import static de.sebastian_doerner.common.TemperatureCalculator.getFahrenheitFromCelsius;
 
 import android.app.Activity;
-import android.util.Log;
 import android.view.MotionEvent;
 import android.view.VelocityTracker;
 import android.view.View;
@@ -60,7 +59,6 @@ public abstract class BaseConverterActivity extends Activity implements View.OnT
     }
 
     private void handleMoveEventWithVelocity(float velocity) {
-        Log.i(TAG, "velocity: " + velocity);
         float magnitude = Math.abs(velocity / velocityToTemperatureDeltaRatio);
         float celsiusTargetDelta = magnitude * (velocity > 0 ? -1.0f : 1.0f);
 
@@ -71,8 +69,6 @@ public abstract class BaseConverterActivity extends Activity implements View.OnT
                 timeStamp - lastProcessedEvent > MIN_TIME_BETWEEN_SMALL_EVENTS_MS / magnitude) {
             lastProcessedEvent = timeStamp;
             setTemperatureCelsius(temperatureCelsius + celsiusTargetDelta);
-        } else {
-            Log.i(TAG, "dropping event");
         }
     }
 
