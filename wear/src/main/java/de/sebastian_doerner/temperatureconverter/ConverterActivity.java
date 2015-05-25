@@ -8,6 +8,12 @@ import de.sebastian_doerner.common.BaseConverterActivity;
 
 public final class ConverterActivity extends BaseConverterActivity {
 
+    private static final float VELOCITY_TO_TEMPERATURE_DELTA_RATIO = 200.0f;
+
+    public ConverterActivity() {
+        super(VELOCITY_TO_TEMPERATURE_DELTA_RATIO);
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

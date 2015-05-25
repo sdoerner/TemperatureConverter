@@ -17,11 +17,15 @@ public abstract class BaseConverterActivity extends Activity implements View.OnT
     private static final int MIN_TEMPERATURE_CELSIUS = -273;
     private static final int MAX_TEMPERATURE_CELSIUS = 100;
 
-    private static final float VELOCITY_TO_TEMPERATURE_DELTA_RATIO = 700.0f;
+    private final float velocityToTemperatureDeltaRatio;
     private static final long MIN_TIME_BETWEEN_SMALL_EVENTS_MS = 200;
 
     protected TextView celsiusView;
     protected TextView fahrenheitView;
+
+    public BaseConverterActivity(float velocityToTemperatureDeltaRatio) {
+        this.velocityToTemperatureDeltaRatio = velocityToTemperatureDeltaRatio;
+    }
 
     float temperatureCelsius;
     long lastProcessedEvent = 0l;
@@ -57,7 +61,7 @@ public abstract class BaseConverterActivity extends Activity implements View.OnT
 
     private void handleMoveEventWithVelocity(float velocity) {
         Log.i(TAG, "velocity: " + velocity);
-        float magnitude = Math.abs(velocity / VELOCITY_TO_TEMPERATURE_DELTA_RATIO);
+        float magnitude = Math.abs(velocity / velocityToTemperatureDeltaRatio);
         float celsiusTargetDelta = magnitude * (velocity > 0 ? -1.0f : 1.0f);
 
         // For small magnitudes only process events ever so often to make it easier to make small
