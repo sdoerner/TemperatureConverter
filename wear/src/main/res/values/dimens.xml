@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <dimen name="textview_margin_top">40dp</dimen>
-    <dimen name="textview_margin_center">16dp</dimen>
-    <dimen name="textview_textsize">36sp</dimen>
+    <dimen name="textview_margin_top">46dp</dimen>
+    <dimen name="textview_margin_center">14dp</dimen>
+    <dimen name="textview_textsize">34sp</dimen>
 </resources>
