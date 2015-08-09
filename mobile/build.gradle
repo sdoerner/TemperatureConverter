@@ -8,8 +8,8 @@ android {
         applicationId "de.sebastian_doerner.temperatureconverter"
         minSdkVersion 19
         targetSdkVersion 21
-        versionCode 2
-        versionName "1.1"
+        versionCode 3
+        versionName "1.2"
     }
     buildTypes {
         release {
@@ -22,4 +22,5 @@ android {
 dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
     compile project(':common')
+    wearApp project(':wear')
 }
